@@ -8,7 +8,6 @@
     ],
     "scripts": {
         "build": "tsc",
-        "prepare": "husky install",
         "postinstall": "npm run build",
         "test": "jest",
         "test:watch": "jest --watch",
