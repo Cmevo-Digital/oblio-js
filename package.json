@@ -1,6 +1,6 @@
 {
   "name": "oblio-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "postinstall": "npm run build",
+    "postinstall": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
