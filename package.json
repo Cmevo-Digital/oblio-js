@@ -50,6 +50,14 @@
       "node_modules"
     ],
     "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+      "global": {
+        "branches": 69,
+        "functions": 82,
+        "lines": 86,
+        "statements": 86
+      }
+    },
     "testEnvironment": "node"
   }
 }
