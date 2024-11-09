@@ -1,18 +1,18 @@
-import axios, { AxiosInstance } from "axios";
-import { Map } from "./types";
-import { AccessToken } from "./access-token/access-token";
-import { OblioApiException } from "./api-exception";
-import { AccessTokenHandlerInMemory } from "./access-token/access-token-handler-in-memory";
+import axios, { AxiosInstance } from 'axios';
+import { Map } from './types';
+import { AccessToken } from './access-token/access-token';
+import { OblioApiException } from './api-exception';
+import { AccessTokenHandlerInMemory } from './access-token/access-token-handler-in-memory';
 
 /**
  * Doc: https://github.com/OblioSoftware/OblioApiJs/blob/main/src/Api.ts
  */
 export class OblioApi {
-  _cif = "";
-  _email = "";
-  _secret = "";
+  _cif = '';
+  _email = '';
+  _secret = '';
   _accessTokenHandler: any = null;
-  _baseURL = "https://www.oblio.eu";
+  _baseURL = 'https://www.oblio.eu';
 
   constructor(email: string, secret: string, cif: string) {
     this._cif = cif;
@@ -22,28 +22,28 @@ export class OblioApi {
   }
 
   async createInvoice(data: Map): Promise<Map> {
-    return await this.createDoc("invoice", data);
+    return await this.createDoc('invoice', data);
   }
 
   async createProforma(data: Map): Promise<Map> {
-    return await this.createDoc("proforma", data);
+    return await this.createDoc('proforma', data);
   }
 
   async createNotice(data: Map): Promise<Map> {
-    return await this.createDoc("notice", data);
+    return await this.createDoc('notice', data);
   }
 
   async createEInvoice(seriesName: string, number: string): Promise<Map> {
-    return await this.createDoc("einvoice", { seriesName, number });
+    return await this.createDoc('einvoice', { seriesName, number });
   }
 
   async createDoc(type: string, data: Map): Promise<Map> {
     this._checkType(type);
-    if (data.cif === undefined && this._cif !== "") {
+    if (data.cif === undefined && this._cif !== '') {
       data.cif = this._cif;
     }
-    if (!("cif" in data) || data.cif === "") {
-      throw new OblioApiException("Empty cif");
+    if (!('cif' in data) || data.cif === '') {
+      throw new OblioApiException('Empty cif');
     }
     const request = await this.buildRequest();
     let response;
@@ -77,26 +77,18 @@ export class OblioApi {
     return response.data;
   }
 
-  async cancel(
-    type: string,
-    seriesName: string,
-    number: number,
-    cancel = true
-  ): Promise<Map> {
+  async cancel(type: string, seriesName: string, number: number, cancel = true): Promise<Map> {
     this._checkType(type);
     const cif = this.getCif();
     const request = await this.buildRequest();
     let response;
 
     try {
-      response = await request.put(
-        `/api/docs/${type}/${cancel ? "cancel" : "restore"}`,
-        {
-          cif: cif,
-          seriesName: seriesName,
-          number: number,
-        }
-      );
+      response = await request.put(`/api/docs/${type}/${cancel ? 'cancel' : 'restore'}`, {
+        cif: cif,
+        seriesName: seriesName,
+        number: number,
+      });
     } catch (err: any) {
       response = err.response;
     }
@@ -125,17 +117,13 @@ export class OblioApi {
     return response.data;
   }
 
-  async collect(
-    seriesName: string,
-    number: number,
-    collect: Map
-  ): Promise<Map> {
+  async collect(seriesName: string, number: number, collect: Map): Promise<Map> {
     const cif = this.getCif();
     const request = await this.buildRequest();
     let response;
 
     try {
-      response = await request.put("/api/docs/invoice/collect", {
+      response = await request.put('/api/docs/invoice/collect', {
         cif: cif,
         seriesName: seriesName,
         number: number,
@@ -148,21 +136,21 @@ export class OblioApi {
     return response.data;
   }
 
-  async nomenclature(type: string, name = "", filters: Map = {}): Promise<Map> {
-    let cif = "";
+  async nomenclature(type: string, name = '', filters: Map = {}): Promise<Map> {
+    let cif = '';
     switch (type) {
-      case "companies":
+      case 'companies':
         break;
-      case "vat_rates":
-      case "products":
-      case "clients":
-      case "series":
-      case "languages":
-      case "management":
+      case 'vat_rates':
+      case 'products':
+      case 'clients':
+      case 'series':
+      case 'languages':
+      case 'management':
         cif = this.getCif();
         break;
       default:
-        throw new OblioApiException("Type not implemented");
+        throw new OblioApiException('Type not implemented');
     }
     const request = await this.buildRequest();
     let response;
@@ -193,9 +181,9 @@ export class OblioApi {
     const request = axios.create({
       baseURL: this._baseURL,
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: accessToken.token_type + " " + accessToken.access_token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: accessToken.token_type + ' ' + accessToken.access_token,
       },
     });
     return request;
@@ -212,42 +200,39 @@ export class OblioApi {
 
   async _generateAccessToken(): Promise<AccessToken> {
     if (!this._email || !this._secret) {
-      throw new OblioApiException("Email or secret are empty!");
+      throw new OblioApiException('Email or secret are empty!');
     }
     const response = await axios.request({
-      method: "post",
+      method: 'post',
       url: `${this._baseURL}/api/authorize/token`,
       data: {
         client_id: this._email,
         client_secret: this._secret,
-        grant_type: "client_credentials",
+        grant_type: 'client_credentials',
       },
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     });
     if (response.status < 200 || response.status >= 300) {
       throw new OblioApiException(
         `Error authorize token! HTTP status: ${response.status}`,
-        response.status
+        response.status,
       );
     }
     return new AccessToken(response.data);
   }
 
   _checkType(type: string): void {
-    if (
-      ["invoice", "proforma", "notice", "receipt", "einvoice"].indexOf(type) ===
-      -1
-    ) {
-      throw new OblioApiException("Type not supported");
+    if (['invoice', 'proforma', 'notice', 'receipt', 'einvoice'].indexOf(type) === -1) {
+      throw new OblioApiException('Type not supported');
     }
   }
 
   _checkErrorResponse(response: Map): void {
     if (response.status < 200 || response.status >= 300) {
-      if (!("statusMessage" in response.data)) {
+      if (!('statusMessage' in response.data)) {
         response.data = {
           statusMessage: `Error! HTTP response status: ${response.status}`,
         };

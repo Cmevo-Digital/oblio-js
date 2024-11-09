@@ -1,4 +1,4 @@
-import { AccessToken } from "./access-token/access-token";
+import { AccessToken } from './access-token/access-token';
 
 export type InvoiceResponse = {
   seriesName: string;
@@ -68,17 +68,17 @@ export interface OblioProduct {
    *  Este valabil doar dupa activarea stocurilor
    */
   productType?:
-    | "Marfa"
-    | "Materii prime"
-    | "Materiale consumabile"
-    | "Semifabricate"
-    | "Produs finit"
-    | "Produs rezidual"
-    | "Produse agricole"
-    | "Animale si pasari"
-    | "Ambalaje"
-    | "Obiecte de inventar"
-    | "Serviciu";
+    | 'Marfa'
+    | 'Materii prime'
+    | 'Materiale consumabile'
+    | 'Semifabricate'
+    | 'Produs finit'
+    | 'Produs rezidual'
+    | 'Produse agricole'
+    | 'Animale si pasari'
+    | 'Ambalaje'
+    | 'Obiecte de inventar'
+    | 'Serviciu';
   /**
    * Numele produsului tradus (daca este cazul pentru facturile in alte limbi decat romana)
    */
@@ -295,7 +295,7 @@ export interface OblioInvoice extends OblioProforma {
     /**
      * Tipul documentului de referinta (Factura, Proforma sau Aviz)
      */
-    type: "Factura" | "Proforma" | "Aviz";
+    type: 'Factura' | 'Proforma' | 'Aviz';
 
     /**
      * Numele seriei documentului de referinta
@@ -321,15 +321,15 @@ export interface OblioInvoice extends OblioProforma {
      * Tipul de document cu care se face incasarea. Poate fi "Chitanta", "Bon fiscal", "Alta incasare numerar", "Ordin de plata", "Mandat postal", "Card", "CEC", "Bilet ordin", "Alta incasare banca"
      */
     type:
-      | "Chitanta"
-      | "Bon fiscal"
-      | "Alta incasare numerar"
-      | "Ordin de plata"
-      | "Mandat postal"
-      | "Card"
-      | "CEC"
-      | "Bilet ordin"
-      | "Alta incasare banca";
+      | 'Chitanta'
+      | 'Bon fiscal'
+      | 'Alta incasare numerar'
+      | 'Ordin de plata'
+      | 'Mandat postal'
+      | 'Card'
+      | 'CEC'
+      | 'Bilet ordin'
+      | 'Alta incasare banca';
 
     /**
      * Numele seriei chitantei. Trebuie definita in cazul in care incasarea se face prin chitanta
