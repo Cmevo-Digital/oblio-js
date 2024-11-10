@@ -25,19 +25,19 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub Actions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run tests
         run: yarn test
 
-      # Build the package (if needed)
+      # Build the package
       - name: Build the package
-        run: npm run build  # Or replace with the appropriate build command
+        run: yarn build 
 
       # Publish the package to GitHub Packages
       - name: Publish to GitHub Packages
-        run: npm publish --access public  # Set to "restricted" if the package is private
+        run: yarn publish --access public  # Or use 'restricted' for private packages
