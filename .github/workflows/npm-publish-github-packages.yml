@@ -6,45 +6,38 @@ on:
       - 'v*'
 
 jobs:
-  test-build-publish:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+      # Authenticate with GitHub Packages
+      - name: Authenticate with GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub Actions
 
+      # Install dependencies
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm install
 
       - name: Run tests
         run: yarn test
 
-      - name: Build the project
-        run: yarn build
+      # Build the package (if needed)
+      - name: Build the package
+        run: npm run build  # Or replace with the appropriate build command
 
-      # Save the build output as an artifact (updated to v3)
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-output
-          path: ./dist  # Path to the directory containing the build output
-
+      # Publish the package to GitHub Packages
       - name: Publish to GitHub Packages
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          yarn publish --new-version $VERSION --registry https://npm.pkg.github.com
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --access public  # Set to "restricted" if the package is private
