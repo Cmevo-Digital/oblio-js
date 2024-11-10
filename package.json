@@ -1,7 +1,7 @@
 {
   "name": "oblio-js",
   "version": "1.0.3",
-  "main": "dist/index.js",
+  "main": "index.ts",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
