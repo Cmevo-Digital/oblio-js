@@ -1,11 +1,8 @@
 {
-  "name": "@Cmevo-Digital/oblio-js",
-  "version": "1.0.13",
+  "name": "oblio-js",
+  "version": "1.0.14",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "files": [
     "dist"
   ],

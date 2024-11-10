@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
 
     steps:
@@ -47,7 +47,7 @@ jobs:
       #   run: zip -r build.zip ./dist  # Change ./dist to your build directory
 
       - name: Compress build files to tar.gz
-        run: tar -czvf build.tar.gz ./dist  # Change ./dist to your build directory
+        run: tar -czvf build.tar.gz ./  # Change ./dist to your build directory
 
       - name: Get version from package.json
         id: get_version
@@ -63,7 +63,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git tag -a "v$VERSION" -m "Release version $VERSION"
           git push origin "v$VERSION"
-
 
       - name: Create GitHub Release
         id: create_release
