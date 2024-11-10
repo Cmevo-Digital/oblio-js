@@ -35,7 +35,7 @@ jobs:
 
       # Build the package
       - name: Build the package
-        run: yarn build 
+        run: yarn build && ls
 
       # Publish the package to GitHub Packages
       - name: Publish to GitHub Packages
