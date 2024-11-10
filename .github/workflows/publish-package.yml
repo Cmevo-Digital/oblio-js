@@ -35,8 +35,8 @@ jobs:
 
       # Build the package
       - name: Build the package
-        run: yarn build && ls
+        run: yarn build
 
       # Publish the package to GitHub Packages
       - name: Publish to GitHub Packages
-        run: yarn publish --access public  # Or use 'restricted' for private packages
+        run: yarn publish --access public --verbose  # Or use 'restricted' for private packages
