@@ -1,45 +1,50 @@
-name: Build and Publish to GitHub Packages
+name: Test, Build and Publish to GitHub Packages
 
 on:
   push:
     tags:
-      - 'v*'  # Trigger on version tags, e.g., v1.0.0
+      - 'v*'
 
 jobs:
-  build:
+  test-build-publish:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Specify your Node.js version
+          node-version: '16'
 
-      # Step 3: Install dependencies using yarn
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
-      # Step 4: Build the project
+      - name: Run tests
+        run: yarn test
+
       - name: Build the project
-        run: yarn build  # This will generate the dist/ folder or the output directory of your choice
+        run: yarn build
 
-      # Step 5: Publish to GitHub Packages
+      # Save the build output as an artifact (updated to v3)
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: ./dist  # Path to the directory containing the build output
+
       - name: Publish to GitHub Packages
         run: |
-          # Set the version dynamically or use the version from the tag
           VERSION=$(node -p "require('./package.json').version")
           yarn publish --new-version $VERSION --registry https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Optionally: You can also upload built files as artifacts (if not using GitHub Packages for storage)
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist
-          path: dist/
