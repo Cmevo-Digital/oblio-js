@@ -47,7 +47,7 @@ jobs:
       #   run: zip -r build.zip ./dist  # Change ./dist to your build directory
 
       - name: Compress build files to tar.gz
-        run: tar -czvf build.tar.gz ./  # Change ./dist to your build directory
+        run: tar -czvf build.tar.gz ./dist package.json README.md LICENSE   # Change ./dist to your build directory
 
       - name: Get version from package.json
         id: get_version
