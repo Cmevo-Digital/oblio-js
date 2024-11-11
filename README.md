@@ -6,6 +6,13 @@ Oblio JS Library by Cmevo Digital
 yarn add oblio-js
 ```
 
+# Usage
+
+```ts
+const oblioClient = new OblioApi("contact@cmevo.com","your-oblio-api-key-hash-here","RO123456");
+oblioClient.createInvoice({...})
+```
+
 # How to publish a new version
 
 1. Increase the package version
