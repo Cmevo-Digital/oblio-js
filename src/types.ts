@@ -362,6 +362,11 @@ export interface OblioInvoice extends OblioProforma {
    * Poate fi 0 sau 1
    */
   useStock?: boolean;
+
+  /**
+   * Send e-invoice to ANAF
+   */
+  sendEinvoice?: boolean;
 }
 
 export interface Map {

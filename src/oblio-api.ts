@@ -6,6 +6,10 @@ import { AccessTokenHandlerInMemory } from './access-token/access-token-handler-
 
 /**
  * Doc: https://github.com/OblioSoftware/OblioApiJs/blob/main/src/Api.ts
+ *
+ * Oblio has rate limits:
+ * - create invoice 30 req / 100s
+ * - others 30 req / 60s
  */
 export class OblioApi {
   _cif = '';
