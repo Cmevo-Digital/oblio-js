@@ -382,7 +382,7 @@ describe('OblioApi', () => {
         delete: jest.fn().mockResolvedValueOnce(mockResponse),
       } as any);
 
-      const result = await oblioApi.delete('invoice', 'SERIES', 1);
+      const result = await oblioApi.delete('invoice', 'SERIES', '1');
 
       expect(result).toEqual({ deleted: true });
     });

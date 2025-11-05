@@ -100,7 +100,7 @@ export class OblioApi {
     return response.data;
   }
 
-  async delete(type: string, seriesName: string, number: number): Promise<Map> {
+  async delete(type: string, seriesName: string, number: string): Promise<Map> {
     this._checkType(type);
     const cif = this.getCif();
     const request = await this.buildRequest();
